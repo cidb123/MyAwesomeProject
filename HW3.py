@@ -14,15 +14,15 @@ def main():
         b.batter, AVG(SUM(b.Hit)/SUM(b.atbat)) OVER (ORDER BY DATE(g.local_date)
         ROWS BETWEEN 100 PRECEDING AND 1 PRECEDING)
             AS Average
-FROM    game g
-    JOIN  batter_counts b
+        FROM    game g
+        JOIN  batter_counts b
         ON g.game_id = b.game_id
-GROUP BY game_date, b.batter;
-"""
+        GROUP BY game_date, b.batter
+        """
     database = "baseball"
     user = "root"
     # pragma: allowlist nextline secret
-    password = "root"
+    password = "password"
     server = "localhost"
     port = 3306
     jdbc_url = f"jdbc:mysql://{server}:{port}/{database}?permitMysqlScheme"
@@ -41,7 +41,7 @@ GROUP BY game_date, b.batter;
     df.write.options(header="true").csv("baseball_spark.csv")
 
     rolling_df = spark.read.csv("baseball_spark.csv", inferSchema="true", header="true")
-    rolling_df.createOrReplaceTempView("titanic")
+    rolling_df.createOrReplaceTempView("baseball_spark")
     rolling_df.persist(StorageLevel.MEMORY_ONLY)
 
     rolling_df = spark.sql(
