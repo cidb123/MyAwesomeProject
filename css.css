@@ -1,0 +1,15 @@
+.css {
+  font-size: 14pt;
+  font-family: Times;
+  border-collapse: collapse;
+  border: 3px solid black;
+}
+
+.css col,
+th {
+  padding: 8px;
+}
+
+.css tr:nth-child(2n) {
+  background: #ffe4c4;
+}
