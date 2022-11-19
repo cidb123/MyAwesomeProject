@@ -21,6 +21,9 @@ pio.renderers.default = "browser"
 
 
 def main():
+    ############################
+    # Connection
+    ############################
     try:
         conn = mariadb.connect(
             user="root",
@@ -111,7 +114,9 @@ def main():
         "Away_OBA",
         "Away_HRper9",
     ]
-
+    ###########################
+    # UPDATING DATAFRAME
+    ###########################
     df = pd.DataFrame(cur.fetchall(), columns=cols)
 
     df = df.rename({"a.game_id": "game_id"}, axis=1)
@@ -144,7 +149,9 @@ def main():
         elif z in cont_col:
             cont_response.append(z)
             cont_col.remove(z)
-
+    ###########################
+    # CORRELATION
+    ###########################
     cont_cont_pair = list(itertools.combinations(cont_col, 2))
     oo_df = pd.DataFrame(index=cont_col, columns=cont_col)
     for c, d in cont_cont_pair:
@@ -163,7 +170,9 @@ def main():
 
     resp_oo_df = {}
     cont_cont_tuples = []
-
+    ###########################
+    # BRUTE FORCE
+    ###########################
     for item in cont_cont_pair:
         item = list(item)
         item.insert(0, "win")
@@ -202,7 +211,9 @@ def main():
 
     for key, value in cot_mse_dict.items():
         value["Diff Mean Resp Pair"] = value["Bin Diff Mean"].sum() / 5
-
+    ###########################
+    # LOGISTIC REGRESSION FOR EACH PAIR
+    ###########################
     pt_df = pd.DataFrame(index=cont_col, columns=cont_col)
 
     for val1, val2 in cont_cont_pair:
@@ -219,7 +230,9 @@ def main():
     pt_df2.columns = ["Predictor 1", "Predictor 2", "P_values & T_score"]
 
     pt_df2 = pt_df2.sort_values(by=["P_values & T_score"], ascending=[True])
-
+    ###########################
+    # PREDICTION MODELS
+    ###########################
     pred_df = idx_df.drop(response, axis=1)
     X = pred_df.values
     y = idx_df[response].values.ravel()
@@ -279,7 +292,9 @@ def main():
         recall_score(y_test, y_pred),
         metrics.recall_score(y_test, y_predsvm),
     ]
-
+    ###########################
+    # HTML
+    ###########################
     pio.write_html(fig2, file="fig2.html", auto_open=False)
 
     html = """
