@@ -20,10 +20,12 @@ RUN pip install --upgrade pip
 COPY requirements.txt .
 RUN pip3 install --compile --no-cache-dir -r requirements.txt
 
+
 # Copy over code
 COPY my_baseball.sql my_baseball.sql
 COPY my_bash_script.sh my_bash_script.sh
 
+#incase bash script needs permission to open
+RUN chmod u+x my_bash_script.sh
 # Run app
 CMD ./my_bash_script.sh
-
