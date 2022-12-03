@@ -14,14 +14,7 @@ services:
       - ./.db:/config
     ports:
       - 5306:3306
-    restart: unless-stopped
-
-  #baseball:
-  #      image: ubuntu
-  #      restart: unless-stopped
-  #      volumes:
-  #        - "./stuff:/app/stuff"
-  #      command: sleep 999999999
+    restart: "no"
 
   baseball:
     build:
@@ -30,6 +23,6 @@ services:
     image: baseball
     environment:
       PORT: "8080"
-    restart: unless-stopped
+    restart: "no"
     volumes:
-      - "./stuff:/app/stuff"
+      - "./baseball.sql:/app/baseball.sql"
