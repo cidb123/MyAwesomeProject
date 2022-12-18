@@ -22,10 +22,12 @@ RUN pip3 install --compile --no-cache-dir -r requirements.txt
 
 
 # Copy over code
-COPY my_baseball.sql my_baseball.sql
+COPY finalact.sql finalact.sql
 COPY my_bash_script.sh my_bash_script.sh
-
+COPY final.py final.py
 #incase bash script needs permission to open
 RUN chmod u+x my_bash_script.sh
-# Run app
+RUN chmod u+x final.py
+  #Run app
 CMD ./my_bash_script.sh
+CMD [ "python3", "final.py"]
