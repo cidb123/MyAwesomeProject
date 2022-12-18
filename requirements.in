@@ -1,1 +1,6 @@
 numpy
+pandas
+plotly
+sklearn
+pyspark
+seaborn
